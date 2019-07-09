@@ -20,8 +20,9 @@ minetest.register_on_mods_loaded(function()
       end
 
       local t0 = minetest.get_us_time()
+      local dtime = t0 - last_call
 
-      if (t0 - last_call) < 100000 then
+      if dtime < 100000 then
 	      -- not enough time passed!
 	      return
       else
@@ -29,8 +30,7 @@ minetest.register_on_mods_loaded(function()
       end
 
       metric.inc()
-
-      globalstep((t0 - last_call) * 1000)
+      globalstep(dtime / 1000000)
 
       local t1 = minetest.get_us_time()
       local diff = t1 - t0
