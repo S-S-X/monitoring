@@ -30,7 +30,7 @@ minetest.register_on_mods_loaded(function()
 
       metric.inc()
 
-      globalstep(...)
+      globalstep((t0 - last_call) * 1000)
 
       local t1 = minetest.get_us_time()
       local diff = t1 - t0
