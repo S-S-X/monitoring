@@ -11,6 +11,7 @@ minetest.register_on_mods_loaded(function()
   for i, globalstep in ipairs(minetest.registered_globalsteps) do
 
     local info = minetest.callback_origins[globalstep]
+    local last_call = minetest.get_us_time()
 
     local new_callback = function(...)
 
@@ -18,8 +19,16 @@ minetest.register_on_mods_loaded(function()
         return
       end
 
-      metric.inc()
       local t0 = minetest.get_us_time()
+
+      if (t0 - last_call) < 100000 then
+	      -- not enough time passed!
+	      return
+      else
+	      last_call = minetest.get_us_time()
+      end
+
+      metric.inc()
 
       globalstep(...)
 
